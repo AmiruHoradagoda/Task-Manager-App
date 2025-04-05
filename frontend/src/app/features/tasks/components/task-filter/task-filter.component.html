@@ -1,0 +1,14 @@
+<div class="filter-container">
+  <span class="filter-label">Filter by status:</span>
+  <div class="status-filters">
+    <button 
+      *ngFor="let filter of filters" 
+      mat-flat-button 
+      [color]="selectedStatus === filter.value ? 'primary' : undefined"
+      class="filter-button"
+    >
+      <mat-icon *ngIf="selectedStatus === filter.value">check</mat-icon>
+      {{ filter.label }}
+    </button>
+  </div>
+</div>
