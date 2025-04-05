@@ -13,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -50,6 +51,8 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public Void saveTask(TaskRequestDto taskDto) {
         Task task  = taskMapper.toTask(taskDto);
+        // Set current date and time
+        task.setCreatedAt(LocalDateTime.now());
         taskRepo.save(task);
         return null;
     }
@@ -59,6 +62,8 @@ public class TaskServiceImpl implements TaskService {
         Task task = taskRepo.findById(taskId)
                 .orElseThrow(()->new RuntimeException("Task is Not Found"));
         taskMapper.updateTaskFromDto(taskDto, task);
+        // Set current date and time
+        task.setCreatedAt(LocalDateTime.now());
         Task updatedTask = taskRepo.save(task);
         return taskMapper.toTaskResponse(updatedTask);
     }

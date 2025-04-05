@@ -10,5 +10,4 @@ public class TaskRequestDto {
     private String title;
     private String description;
     private String status;          // TO_DO | IN_PROGRESS | DONE
-    private LocalDateTime createdAt;
 }
