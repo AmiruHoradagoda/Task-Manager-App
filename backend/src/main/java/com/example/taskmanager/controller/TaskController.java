@@ -2,6 +2,7 @@ package com.example.taskmanager.controller;
 
 import com.example.taskmanager.dto.request.TaskRequestDto;
 import com.example.taskmanager.dto.response.TaskResponseDto;
+import com.example.taskmanager.dto.response.paginate.TaskResponsePaginatedDto;
 import com.example.taskmanager.service.TaskService;
 import com.example.taskmanager.utility.StandardResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/tasks")
 public class TaskController {
-    private TaskService taskService;
+    private final TaskService taskService;
 
     @Autowired
     TaskController(TaskService taskService) {
@@ -35,12 +36,15 @@ public class TaskController {
     }
 
     @GetMapping
-    private ResponseEntity<StandardResponseDto> getAllTasks() {
-        List<TaskResponseDto> taskResponseDtos = taskService.getAllTasks();
+    private ResponseEntity<StandardResponseDto> getAllTasks(
+            @RequestParam int page,
+            @RequestParam int size
+    ) {
+        TaskResponsePaginatedDto taskResponseDtos = taskService.getAllTasks(page,size);
         return new ResponseEntity<>(
                 StandardResponseDto.
                         builder().
-                        code(200).
+                        code(201).
                         message("Task list").
                         data(taskResponseDtos).
                         build(), HttpStatus.OK
@@ -77,7 +81,7 @@ public class TaskController {
         return new ResponseEntity<>(
                 StandardResponseDto.
                         builder().
-                        code(200).
+                        code(204).
                         message("Task deleted").
                         data(taskService.deleteTask(taskId)).
                         build(), HttpStatus.NO_CONTENT
