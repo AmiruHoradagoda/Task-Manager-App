@@ -1,5 +1,7 @@
 package com.example.taskmanager.entity;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -8,7 +10,9 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Builder
+@Entity
 public class Task {
+    @Id
     private Long id;
     private String title;
     private String description;
