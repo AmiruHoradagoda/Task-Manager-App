@@ -6,6 +6,7 @@ import com.example.taskmanager.dto.response.paginate.TaskResponsePaginatedDto;
 import com.example.taskmanager.entity.Task;
 import com.example.taskmanager.repository.TaskRepo;
 import com.example.taskmanager.service.TaskService;
+import com.example.taskmanager.utility.TaskStatus;
 import com.example.taskmanager.utility.mappers.TaskMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -41,6 +42,21 @@ public class TaskServiceImpl implements TaskService {
                 .build();
     }
 
+    @Override
+    public TaskResponsePaginatedDto getAllTasksByStatus(int page, int size, String taskStatusStr) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Task> taskPage = taskRepo.findTasksByStatusString(taskStatusStr, pageable);
+
+        List<TaskResponseDto> taskDtoList = taskPage.getContent()
+                .stream()
+                .map(taskMapper::toTaskResponse)
+                .toList();
+
+        return TaskResponsePaginatedDto.builder()
+                .dataCount(taskPage.getTotalElements())
+                .dataList(taskDtoList)
+                .build();
+    }
     @Override
     public TaskResponseDto getTaskById(Long taskId) {
         Task task = taskRepo.findById(taskId)

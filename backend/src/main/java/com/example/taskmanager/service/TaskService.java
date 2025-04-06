@@ -4,8 +4,6 @@ import com.example.taskmanager.dto.request.TaskRequestDto;
 import com.example.taskmanager.dto.response.TaskResponseDto;
 import com.example.taskmanager.dto.response.paginate.TaskResponsePaginatedDto;
 
-import java.util.List;
-
 public interface TaskService {
     
 
@@ -18,6 +16,8 @@ public interface TaskService {
     Void deleteTask(Long taskId);
 
     TaskResponsePaginatedDto getAllTasks(int page, int size);
+
+    TaskResponsePaginatedDto getAllTasksByStatus(int page, int size, String taskStatus);
 
     ;
 }

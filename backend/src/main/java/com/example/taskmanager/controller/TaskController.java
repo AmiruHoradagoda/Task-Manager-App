@@ -50,6 +50,22 @@ public class TaskController {
                         build(), HttpStatus.OK
         );
     }
+    @GetMapping("/status/{status}")
+    private ResponseEntity<StandardResponseDto> getAllTasksByStatus(
+            @PathVariable("status") String taskStatus,
+            @RequestParam int page,
+            @RequestParam int size
+    ) {
+        TaskResponsePaginatedDto taskResponseDtos = taskService.getAllTasksByStatus(page,size,taskStatus);
+        return new ResponseEntity<>(
+                StandardResponseDto.
+                        builder().
+                        code(201).
+                        message("Task list").
+                        data(taskResponseDtos).
+                        build(), HttpStatus.OK
+        );
+    }
 
     @PostMapping
     private ResponseEntity<StandardResponseDto> saveTask(@RequestBody TaskRequestDto taskDto) {
@@ -84,7 +100,7 @@ public class TaskController {
                         code(204).
                         message("Task deleted").
                         data(taskService.deleteTask(taskId)).
-                        build(), HttpStatus.NO_CONTENT
+                        build(), HttpStatus.OK
         );
     }
 }
