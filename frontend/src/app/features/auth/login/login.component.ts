@@ -10,6 +10,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-login',
@@ -23,6 +24,7 @@ import { CommonModule } from '@angular/common';
     MatButtonModule,
     MatIconModule,
     MatProgressSpinnerModule,
+    MatCheckboxModule,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
@@ -59,7 +61,7 @@ export class LoginComponent implements OnInit {
       this.authService.login(username, password).subscribe({
         next: (response) => {
           this.isLoading = false;
-           this.router.navigate(['/tasks']);
+          this.router.navigate(['/tasks']);
         },
         error: (error) => {
           this.isLoading = false;

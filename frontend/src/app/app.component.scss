@@ -1,46 +1,125 @@
+/* Layout Styles */
 .app-container {
   display: flex;
   flex-direction: column;
   height: 100vh;
-  overflow: hidden;
 }
 
 .app-sidenav-container {
   flex: 1;
-  width: 100%;
 }
 
 .app-sidenav {
   width: 250px;
+  border-right: 1px solid rgba(0, 0, 0, 0.12);
 }
 
 .app-content {
-  height: calc(100vh - 64px);
-  overflow-y: auto;
+  background-color: #f7f9fc;
 }
 
 .content-wrapper {
-  padding: 20px;
+  padding: 16px;
   max-width: 1200px;
   margin: 0 auto;
 }
 
-.active-link {
-  background-color: rgba(63, 81, 181, 0.1);
-  font-weight: 500;
+/* Auth Overlay Styles */
+.auth-overlay {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  overflow: hidden;
+}
+
+.auth-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, #b3c4ff, #4a6bde);
+  z-index: -1;
+  overflow: hidden;
+}
+
+/* Animated shapes for background */
+.shape {
+  position: absolute;
+  background-color: rgba(255, 255, 255, 0.08);
+  border-radius: 50%;
+}
+
+.shape-1 {
+  width: 400px;
+  height: 400px;
+  top: -150px;
+  left: -100px;
+  animation: float 12s infinite ease-in-out;
+}
+
+.shape-2 {
+  width: 300px;
+  height: 300px;
+  bottom: -100px;
+  right: -50px;
+  animation: float 15s infinite ease-in-out reverse;
+}
+
+.shape-3 {
+  width: 200px;
+  height: 200px;
+  bottom: 30%;
+  left: 10%;
+  animation: float 18s infinite ease-in-out;
+}
+
+@keyframes float {
+  0% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(20px, 20px);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
 }
 
 .auth-container {
-  height: 100vh;
-  width: 100vw;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #f5f5f5;
+  width: 100%;
+  max-width: 450px;
+  z-index: 1;
 }
 
-@media (max-width: 600px) {
-  .content-wrapper {
-    padding: 16px;
+/* Nav list styling */
+.mat-nav-list {
+  .active-link {
+    background-color: rgba(74, 107, 222, 0.1);
+    color: #4a6bde;
+    border-left: 4px solid #4a6bde;
+  }
+
+  a {
+    margin: 4px 0;
+    border-radius: 0 24px 24px 0;
+    transition: all 0.2s;
+    border-left: 4px solid transparent;
+
+    &:hover {
+      background-color: rgba(74, 107, 222, 0.05);
+    }
+  }
+
+  mat-icon {
+    margin-right: 8px;
+    color: rgba(0, 0, 0, 0.6);
+  }
+
+  .active-link mat-icon {
+    color: #4a6bde;
   }
 }

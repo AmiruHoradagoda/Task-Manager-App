@@ -1,9 +1,6 @@
-<!-- Show full layout for authenticated routes -->
-<div class="app-container" *ngIf="shouldShowLayout()">
-  <!-- Header with sidenav toggle -->
-  <app-header (toggleSidenav)="toggleSidenav()"></app-header>
 
-  <!-- Main Content with Sidenav -->
+<div class="app-container" *ngIf="shouldShowLayout()">
+  <app-header (toggleSidenav)="toggleSidenav()"></app-header>
   <mat-sidenav-container class="app-sidenav-container">
     <!-- Side Navigation -->
     <mat-sidenav #sidenav mode="over" class="app-sidenav" [opened]="false" [fixedInViewport]="true" [fixedTopGap]="64">
@@ -19,7 +16,6 @@
       </mat-nav-list>
     </mat-sidenav>
     
-    <!-- Content Area -->
     <mat-sidenav-content class="app-content">
       <div class="content-wrapper">
         <router-outlet></router-outlet>
@@ -28,7 +24,16 @@
   </mat-sidenav-container>
 </div>
 
-<!-- Show only router outlet for auth pages -->
-<div class="auth-container" *ngIf="!shouldShowLayout()">
-  <router-outlet></router-outlet>
+<!-- Auth Overlay for non-authenticated users -->
+<div class="auth-overlay" *ngIf="!shouldShowLayout()">
+  <div class="auth-background">
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+  </div>
+  
+  <div class="auth-container">
+    <!-- Auth content is loaded via router outlet -->
+    <router-outlet></router-outlet>
+  </div>
 </div>
