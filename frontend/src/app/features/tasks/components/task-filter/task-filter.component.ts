@@ -17,7 +17,7 @@ export class TaskFilterComponent {
 
   readonly TaskStatus = TaskStatus;
 
-  filters = [
+  filters: Array<{ value: TaskStatus | 'ALL'; label: string }> = [
     { value: 'ALL', label: 'All Tasks' },
     { value: TaskStatus.TO_DO, label: 'To Do' },
     { value: TaskStatus.IN_PROGRESS, label: 'In Progress' },

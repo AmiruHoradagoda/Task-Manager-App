@@ -6,6 +6,7 @@
       mat-flat-button 
       [color]="selectedStatus === filter.value ? 'primary' : undefined"
       class="filter-button"
+      (click)="selectStatus(filter.value)"
     >
       <mat-icon *ngIf="selectedStatus === filter.value">check</mat-icon>
       {{ filter.label }}

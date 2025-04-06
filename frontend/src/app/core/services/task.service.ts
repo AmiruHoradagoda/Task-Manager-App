@@ -35,12 +35,14 @@ export class TaskService {
     const params = new HttpParams()
       .set('page', page.toString())
       .set('size', size.toString())
-      .set('status', status);
 
     return this.http
-      .get<StandardResponseDto<TaskResponsePaginatedDto>>(this.apiUrl, {
-        params,
-      })
+      .get<StandardResponseDto<TaskResponsePaginatedDto>>(
+        `${this.apiUrl}/status/${status}`,
+        {
+          params,
+        }
+      )
       .pipe(
         map((response) => response.data),
         catchError(this.handleError)
