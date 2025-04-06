@@ -1,0 +1,403 @@
+// Variables
+$primary-color: #3f51b5;
+$accent-color: #ff4081;
+$warning-color: #ff9800;
+$success-color: #4caf50;
+$error-color: #f44336;
+$light-gray: #f5f7fa;
+$medium-gray: #e0e0e0;
+$dark-gray: #757575;
+$card-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+$transition: all 0.3s ease;
+
+.task-dashboard {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: $light-gray;
+}
+
+// Dashboard Header styles
+.dashboard-header {
+  background-color: white;
+  padding: 24px 0;
+  box-shadow: $card-shadow;
+  
+  .header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .title-section {
+    h1 {
+      margin: 0;
+      font-size: 28px;
+      font-weight: 500;
+      color: #333;
+    }
+    
+    .subtitle {
+      margin: 4px 0 0;
+      color: $dark-gray;
+      font-size: 14px;
+    }
+  }
+  
+  .create-button {
+    padding: 0 24px;
+    height: 44px;
+    font-weight: 500;
+    border-radius: 22px;
+    
+    mat-icon {
+      margin-right: 8px;
+    }
+  }
+}
+
+// Dashboard Content styles
+.dashboard-content {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 24px 16px;
+  flex: 1;
+}
+
+// Stats Section
+.stats-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+  
+  .stat-card {
+    height: 100px;
+    border-radius: 8px;
+    border: none;
+    transition: $transition;
+    
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    }
+    
+    mat-card-content {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      padding: 16px;
+    }
+    
+    .stat-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 16px;
+      
+      mat-icon {
+        font-size: 24px;
+        height: 24px;
+        width: 24px;
+        color: white;
+      }
+    }
+    
+    .todo-icon {
+      background-color: $warning-color;
+    }
+    
+    .in-progress-icon {
+      background-color: $primary-color;
+    }
+    
+    .done-icon {
+      background-color: $success-color;
+    }
+    
+    .stat-info {
+      display: flex;
+      flex-direction: column;
+      
+      .stat-value {
+        font-size: 24px;
+        font-weight: 500;
+      }
+      
+      .stat-label {
+        font-size: 14px;
+        color: $dark-gray;
+      }
+    }
+  }
+}
+
+// Filter Card
+.filter-card {
+  margin-bottom: 24px;
+  border-radius: 8px;
+  border: none;
+  
+  mat-card-content {
+    padding: 16px;
+  }
+  
+  .filter-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    
+    .filter-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: $dark-gray;
+      font-weight: 500;
+      
+      mat-icon {
+        font-size: 20px;
+        height: 20px;
+        width: 20px;
+      }
+    }
+    
+    .search-box {
+      margin-left: auto;
+      
+      mat-form-field {
+        width: 240px;
+        
+        ::ng-deep .mat-mdc-form-field-subscript-wrapper {
+          display: none;
+        }
+      }
+    }
+  }
+}
+
+// Tasks Table
+.tasks-table-container {
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: $card-shadow;
+}
+
+.tasks-table {
+  width: 100%;
+  
+  .task-row {
+    transition: background-color 0.2s;
+    
+    &:hover {
+      background-color: rgba($primary-color, 0.04);
+    }
+  }
+  
+  .title-cell {
+    padding: 16px 24px;
+    
+    .task-title {
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+    
+    .task-desc {
+      font-size: 13px;
+      color: $dark-gray;
+    }
+  }
+  
+  .date-cell {
+    .date {
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+    
+    .time {
+      font-size: 12px;
+      color: $dark-gray;
+    }
+  }
+  
+  .status-chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 12px;
+    border-radius: 16px;
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: capitalize;
+    
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-right: 6px;
+    }
+    
+    &.todo {
+      background-color: rgba($warning-color, 0.1);
+      color: darken($warning-color, 10%);
+      
+      .status-dot {
+        background-color: $warning-color;
+      }
+    }
+    
+    &.in-progress {
+      background-color: rgba($primary-color, 0.1);
+      color: darken($primary-color, 10%);
+      
+      .status-dot {
+        background-color: $primary-color;
+      }
+    }
+    
+    &.done {
+      background-color: rgba($success-color, 0.1);
+      color: darken($success-color, 10%);
+      
+      .status-dot {
+        background-color: $success-color;
+      }
+    }
+  }
+  
+  .actions-cell {
+    width: 150px;
+    text-align: right;
+    
+    .action-buttons {
+      display: flex;
+      justify-content: flex-end;
+      gap: 4px;
+    }
+  }
+  
+  .empty-state {
+    min-height: 300px;
+  }
+}
+
+// No data state
+.no-data-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  text-align: center;
+  
+  .empty-image {
+    width: 150px;
+    margin-bottom: 24px;
+  }
+  
+  h3 {
+    font-size: 18px;
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+  
+  p {
+    color: $dark-gray;
+    margin-bottom: 24px;
+  }
+}
+
+// Loading and Error states
+.loading-container,
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  text-align: center;
+  
+  p {
+    margin-top: 16px;
+    color: $dark-gray;
+  }
+}
+
+.error-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
+  padding: 32px;
+  border-radius: 8px;
+  box-shadow: $card-shadow;
+  max-width: 400px;
+  
+  mat-icon {
+    font-size: 48px;
+    height: 48px;
+    width: 48px;
+    margin-bottom: 16px;
+  }
+  
+  h3 {
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+  
+  p {
+    margin-bottom: 24px;
+    color: $dark-gray;
+  }
+}
+
+// Customize paginator
+.custom-paginator {
+  background: transparent;
+  border-top: 1px solid $medium-gray;
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .dashboard-header .header-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  
+  .filter-row {
+    .search-box {
+      width: 100%;
+      margin-left: 0;
+      
+      mat-form-field {
+        width: 100%;
+      }
+    }
+  }
+  
+  .actions-header {
+    display: none;
+  }
+  
+  .actions-cell {
+    position: absolute;
+    right: 0;
+    background: linear-gradient(to right, transparent, white 20%);
+    padding-right: 8px !important;
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
+  
+  .task-row {
+    position: relative;
+  }
+}

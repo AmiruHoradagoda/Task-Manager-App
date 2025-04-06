@@ -16,6 +16,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TaskResponseDto, TaskStatus } from '../../../core/models/task.model';
 import { TaskService } from '../../../core/services/task.service';
@@ -28,6 +29,7 @@ import { TaskFilterComponent } from '../components/task-filter/task-filter.compo
     CommonModule,
     DatePipe,
     RouterLink,
+    FormsModule,
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
@@ -44,23 +46,26 @@ import { TaskFilterComponent } from '../components/task-filter/task-filter.compo
   styleUrl: './task-list.component.scss',
 })
 export class TaskListComponent implements OnInit {
-  displayedColumns: string[] = [
-    'title',
-    'description',
-    'status',
-    'createdAt',
-    'actions',
-  ];
+  // Table data
+  displayedColumns: string[] = ['title', 'status', 'createdAt', 'actions'];
   dataSource = new MatTableDataSource<TaskResponseDto>([]);
-  isLoading = true;
-  error = '';
-  selectedStatus: TaskStatus | 'ALL' = 'ALL';
 
-  // Pagination parameters
+  // Pagination
   totalItems = 0;
   pageSize = 10;
   currentPage = 0;
   pageSizeOptions = [5, 10, 25, 50];
+
+  // Filters and state
+  selectedStatus: TaskStatus | 'ALL' = 'ALL';
+  searchTerm: string = '';
+  isLoading = true;
+  error = '';
+
+  // Task stats
+  todoCount = 0;
+  inProgressCount = 0;
+  doneCount = 0;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -73,6 +78,7 @@ export class TaskListComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadTasks();
+    this.loadTaskStats();
   }
 
   ngAfterViewInit() {
@@ -114,6 +120,29 @@ export class TaskListComponent implements OnInit {
     }
   }
 
+  loadTaskStats(): void {
+    // Get count for TO_DO tasks
+    this.taskService.getTasksByStatus(TaskStatus.TO_DO, 0, 1).subscribe({
+      next: (paginatedData) => {
+        this.todoCount = paginatedData.dataCount;
+      },
+    });
+
+    // Get count for IN_PROGRESS tasks
+    this.taskService.getTasksByStatus(TaskStatus.IN_PROGRESS, 0, 1).subscribe({
+      next: (paginatedData) => {
+        this.inProgressCount = paginatedData.dataCount;
+      },
+    });
+
+    // Get count for DONE tasks
+    this.taskService.getTasksByStatus(TaskStatus.DONE, 0, 1).subscribe({
+      next: (paginatedData) => {
+        this.doneCount = paginatedData.dataCount;
+      },
+    });
+  }
+
   onFilterChange(status: TaskStatus | 'ALL'): void {
     this.selectedStatus = status;
     this.currentPage = 0; // Reset to first page when filter changes
@@ -129,15 +158,6 @@ export class TaskListComponent implements OnInit {
     this.loadTasks();
   }
 
-  applyFilter(event: Event): void {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
-  }
-
   editTask(id: number): void {
     this.router.navigate(['/tasks/edit', id]);
   }
@@ -151,6 +171,7 @@ export class TaskListComponent implements OnInit {
       this.taskService.deleteTask(id).subscribe({
         next: () => {
           this.loadTasks();
+          this.loadTaskStats(); // Refresh stats after deletion
           this.showSuccessMessage('Task deleted successfully');
         },
         error: (error) => {
@@ -164,14 +185,27 @@ export class TaskListComponent implements OnInit {
   getStatusClass(status: string): string {
     switch (status) {
       case TaskStatus.TO_DO:
-        return 'status-todo';
+        return 'todo';
       case TaskStatus.IN_PROGRESS:
-        return 'status-in-progress';
+        return 'in-progress';
       case TaskStatus.DONE:
-        return 'status-done';
+        return 'done';
       default:
         return '';
     }
+  }
+
+  // Helper methods for stats
+  getTodoCount(): number {
+    return this.todoCount;
+  }
+
+  getInProgressCount(): number {
+    return this.inProgressCount;
+  }
+
+  getDoneCount(): number {
+    return this.doneCount;
   }
 
   showSuccessMessage(message: string): void {
