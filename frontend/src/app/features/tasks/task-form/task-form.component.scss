@@ -1,85 +1,277 @@
-.task-form-container {
+// Variables
+$primary-color: #3f51b5;
+$accent-color: #ff4081;
+$warning-color: #ff9800;
+$success-color: #4caf50;
+$error-color: #f44336;
+$light-gray: #f5f7fa;
+$medium-gray: #e0e0e0;
+$dark-gray: #757575;
+$card-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+$transition: all 0.3s ease;
+
+.task-form-page {
+  display: flex;
+  justify-content: center;
+  min-height: 100%;
+  background-color: $light-gray;
   padding: 20px;
-  max-width: 800px;
-  margin: 0 auto;
 }
 
+.form-container {
+  width: 100%;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+// Header Section Styles
 .form-header {
-  margin-bottom: 20px;
+  background-color: white;
+  border-radius: 8px;
+  padding: 24px;
+  box-shadow: $card-shadow;
   
-  h1 {
-    font-size: 28px;
-    font-weight: 500;
-    margin: 0;
+  .header-content {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  
+  .back-button {
+    background-color: rgba($primary-color, 0.1);
+    
+    &:hover {
+      background-color: rgba($primary-color, 0.2);
+    }
+  }
+  
+  .title-section {
+    h1 {
+      margin: 0;
+      font-size: 24px;
+      font-weight: 500;
+      color: #333;
+    }
+    
+    .subtitle {
+      margin: 4px 0 0;
+      color: $dark-gray;
+      font-size: 14px;
+    }
   }
 }
 
-.full-width {
-  width: 100%;
+// Loading Container Styles
+.loading-container {
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: $card-shadow;
+  
+  mat-progress-bar {
+    height: 4px;
+  }
+  
+  .loading-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 32px;
+    
+    p {
+      margin-top: 16px;
+      color: $dark-gray;
+    }
+  }
 }
 
-.form-field {
-  margin-bottom: 16px;
+// Error Alert Styles
+.error-alert {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  background-color: rgba($error-color, 0.1);
+  border-left: 4px solid $error-color;
+  border-radius: 4px;
+  
+  mat-icon {
+    color: $error-color;
+    margin-right: 12px;
+  }
+  
+  span {
+    flex: 1;
+    color: rgba(0, 0, 0, 0.8);
+  }
 }
 
+// Form Card Styles
+.form-card {
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: $card-shadow;
+  
+  mat-card-content {
+    padding: 24px;
+  }
+}
+
+// Form Section Styles
+.form-section {
+  margin-bottom: 24px;
+  
+  .full-width {
+    width: 100%;
+  }
+  
+  .status-label {
+    display: block;
+    margin-bottom: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.6);
+  }
+  
+  .status-options {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    
+    .status-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 16px;
+      border-radius: 8px;
+      border: 1px solid $medium-gray;
+      cursor: pointer;
+      transition: $transition;
+      
+      mat-icon {
+        font-size: 20px;
+        height: 20px;
+        width: 20px;
+      }
+      
+      span {
+        font-weight: 500;
+        font-size: 14px;
+      }
+      
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.04);
+      }
+      
+      &.selected {
+        border-width: 2px;
+      }
+      
+      // Status-specific styling
+      &.todo {
+        &.selected {
+          border-color: $warning-color;
+          background-color: rgba($warning-color, 0.1);
+          
+          mat-icon, span {
+            color: darken($warning-color, 10%);
+          }
+        }
+      }
+      
+      &.in-progress {
+        &.selected {
+          border-color: $primary-color;
+          background-color: rgba($primary-color, 0.1);
+          
+          mat-icon, span {
+            color: darken($primary-color, 10%);
+          }
+        }
+      }
+      
+      &.done {
+        &.selected {
+          border-color: $success-color;
+          background-color: rgba($success-color, 0.1);
+          
+          mat-icon, span {
+            color: darken($success-color, 10%);
+          }
+        }
+      }
+    }
+  }
+  
+  .status-error {
+    display: flex;
+    align-items: center;
+    margin-top: 8px;
+    
+    mat-icon {
+      color: $error-color;
+      font-size: 16px;
+      height: 16px;
+      width: 16px;
+      margin-right: 4px;
+    }
+    
+    span {
+      color: $error-color;
+      font-size: 12px;
+    }
+  }
+}
+
+// Form Actions Styles
 .form-actions {
   display: flex;
   justify-content: flex-end;
-  gap: 12px;
-  margin-top: 24px;
-}
-
-.loading-container, .error-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 200px;
-  text-align: center;
-  color: #616161;
-  margin-bottom: 20px;
+  gap: 16px;
+  margin-top: 32px;
   
-  mat-icon {
-    margin-bottom: 10px;
-    font-size: 32px;
-    height: 32px;
-    width: 32px;
+  .cancel-button {
+    color: $dark-gray;
   }
   
-  p {
-    margin: 10px 0;
+  .submit-button {
+    padding: 0 24px;
+    
+    mat-icon {
+      margin-right: 8px;
+    }
   }
 }
 
-.error-container {
-  border: 1px solid #eeeeee;
-  border-radius: 4px;
-  background-color: white;
-  padding: 20px;
-  
-  mat-icon {
-    color: #f44336;
-  }
-}
-
-/* Override Angular Material for textarea */
-::ng-deep .mat-form-field-appearance-outline .mat-form-field-flex {
-  padding: 0 !important;
-}
-
-textarea {
-  resize: vertical;
-}
-
-/* Responsive styles */
+// Responsive Adjustments
 @media (max-width: 600px) {
-  .task-form-container {
-    padding: 10px;
+  .task-form-page {
+    padding: 16px;
+  }
+  
+  .form-header {
+    padding: 16px;
+  }
+  
+  .form-card {
+    mat-card-content {
+      padding: 16px;
+    }
+  }
+  
+  .status-options {
+    flex-direction: column;
+    
+    .status-option {
+      width: 100%;
+    }
   }
   
   .form-actions {
     flex-direction: column-reverse;
-    gap: 8px;
     
     button {
       width: 100%;

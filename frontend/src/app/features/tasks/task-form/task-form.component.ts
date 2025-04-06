@@ -15,9 +15,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { TaskService } from '../../../core/services/task.service';
 import { TaskRequestDto, TaskStatus } from '../../../core/models/task.model';
-
+import { MatTooltipModule } from '@angular/material/tooltip';
 @Component({
   selector: 'app-task-form',
   standalone: true,
@@ -32,6 +33,8 @@ import { TaskRequestDto, TaskStatus } from '../../../core/models/task.model';
     MatCardModule,
     MatIconModule,
     MatProgressSpinnerModule,
+    MatProgressBarModule,
+    MatTooltipModule,
   ],
   templateUrl: './task-form.component.html',
   styleUrl: './task-form.component.scss',
@@ -176,5 +179,29 @@ export class TaskFormComponent implements OnInit {
       verticalPosition: 'top',
       panelClass: ['error-snackbar'],
     });
+  }
+  getStatusClass(status: string): string {
+    switch (status) {
+      case 'TO_DO':
+        return 'todo';
+      case 'IN_PROGRESS':
+        return 'in-progress';
+      case 'DONE':
+        return 'done';
+      default:
+        return '';
+    }
+  }
+  getStatusIcon(status: string): string {
+    switch (status) {
+      case 'TO_DO':
+        return 'assignment';
+      case 'IN_PROGRESS':
+        return 'hourglass_empty';
+      case 'DONE':
+        return 'check_circle';
+      default:
+        return 'help';
+    }
   }
 }
