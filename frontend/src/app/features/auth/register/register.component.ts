@@ -46,7 +46,6 @@ export class RegisterComponent implements OnInit {
     this.registerForm = this.fb.group({
       fullName: ['', [Validators.required]],
       username: ['', [Validators.required]],
-      email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
     });
   }
@@ -64,7 +63,6 @@ export class RegisterComponent implements OnInit {
       const userData = {
         fullName: this.registerForm.value.fullName,
         username: this.registerForm.value.username,
-        email: this.registerForm.value.email,
         password: this.registerForm.value.password,
       };
 
@@ -83,14 +81,20 @@ export class RegisterComponent implements OnInit {
         },
         error: (error) => {
           this.isLoading = false;
-          this.snackBar.open(
-            error.message || 'Registration failed. Please try again.',
-            'Close',
-            {
-              duration: 5000,
-              panelClass: ['error-snackbar'],
-            }
-          );
+          let errorMessage = 'Registration failed. Please try again.';
+
+          // Check for specific error status
+          if (error.status === 409) {
+            errorMessage =
+              'This username or email is already registered. Please use different credentials.';
+          } else if (error.message) {
+            errorMessage = error.message;
+          }
+
+          this.snackBar.open(errorMessage, 'Close', {
+            duration: 5000,
+            panelClass: ['error-snackbar'],
+          });
         },
       });
     } else {
@@ -98,7 +102,6 @@ export class RegisterComponent implements OnInit {
       this.registerForm.markAllAsTouched();
     }
   }
-
   navigateToLogin(): void {
     this.router.navigate(['auth/login']);
   }
