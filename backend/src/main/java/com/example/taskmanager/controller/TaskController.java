@@ -64,7 +64,7 @@ public class TaskController {
     }
 
     @PutMapping("/{id}")
-    private ResponseEntity<StandardResponseDto> updateTask(@PathVariable("id") Long taskId, TaskRequestDto taskDto) {
+    private ResponseEntity<StandardResponseDto> updateTask(@PathVariable("id") Long taskId,@RequestBody TaskRequestDto taskDto) {
         TaskResponseDto taskResponseDto = taskService.updateTask(taskId, taskDto);
         return new ResponseEntity<>(
                 StandardResponseDto.

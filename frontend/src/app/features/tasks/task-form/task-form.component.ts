@@ -113,9 +113,9 @@ export class TaskFormComponent implements OnInit {
     this.error = '';
 
     const taskData: TaskRequestDto = {
-      title: this.taskForm.value.title,
-      description: this.taskForm.value.description,
-      status: this.taskForm.value.status,
+      title: this.taskForm.get('title')?.value,
+      description: this.taskForm.get('description')?.value,
+      status: this.taskForm.get('status')?.value,
     };
 
     if (this.isEditMode && this.taskId) {
