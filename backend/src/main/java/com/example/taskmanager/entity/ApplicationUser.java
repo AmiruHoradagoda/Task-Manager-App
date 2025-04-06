@@ -1,9 +1,10 @@
 package com.example.taskmanager.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "application_user")
@@ -23,5 +24,6 @@ public class ApplicationUser {
     private boolean isCredentialsNonExpired;
     private boolean isEnabled;
 
-    // Roles relationship has been removed
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Task> tasks = new ArrayList<>();
 }
