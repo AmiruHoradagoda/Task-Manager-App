@@ -6,7 +6,6 @@ import com.example.taskmanager.dto.response.paginate.TaskResponsePaginatedDto;
 import com.example.taskmanager.entity.Task;
 import com.example.taskmanager.repository.TaskRepo;
 import com.example.taskmanager.service.TaskService;
-import com.example.taskmanager.utility.TaskStatus;
 import com.example.taskmanager.utility.mappers.TaskMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
