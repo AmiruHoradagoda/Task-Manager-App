@@ -1,37 +1,13 @@
+<!-- Show full layout for authenticated routes -->
+<div class="app-container" *ngIf="shouldShowLayout()">
+  <!-- Header with sidenav toggle -->
+  <app-header (toggleSidenav)="toggleSidenav()"></app-header>
 
-<div class="app-container">
-  <!-- Header -->
-  <mat-toolbar color="primary" class="app-header">
-    <button mat-icon-button *ngIf="!isLoginPage()" (click)="sidenav.toggle()">
-      <mat-icon>menu</mat-icon>
-    </button>
-    <span class="app-title">{{ title }}</span>
-    <span class="spacer"></span>
-    <button mat-icon-button *ngIf="!isLoginPage()" [matMenuTriggerFor]="userMenu">
-      <mat-icon>account_circle</mat-icon>
-    </button>
-    <mat-menu #userMenu="matMenu">
-      <button mat-menu-item>
-        <mat-icon>person</mat-icon>
-        <span>Profile</span>
-      </button>
-      <mat-divider></mat-divider>
-      <button mat-menu-item>
-        <mat-icon>exit_to_app</mat-icon>
-        <span>Logout</span>
-      </button>
-    </mat-menu>
-  </mat-toolbar>
-
-  <!-- Main Content -->
+  <!-- Main Content with Sidenav -->
   <mat-sidenav-container class="app-sidenav-container">
     <!-- Side Navigation -->
-    <mat-sidenav #sidenav mode="over" class="app-sidenav" [opened]="false" [fixedInViewport]="true">
+    <mat-sidenav #sidenav mode="over" class="app-sidenav" [opened]="false" [fixedInViewport]="true" [fixedTopGap]="64">
       <mat-nav-list>
-        <a mat-list-item routerLink="/dashboard" routerLinkActive="active-link">
-          <mat-icon matListItemIcon>dashboard</mat-icon>
-          <span matListItemTitle>Dashboard</span>
-        </a>
         <a mat-list-item routerLink="/tasks" routerLinkActive="active-link">
           <mat-icon matListItemIcon>assignment</mat-icon>
           <span matListItemTitle>Tasks</span>
@@ -50,4 +26,9 @@
       </div>
     </mat-sidenav-content>
   </mat-sidenav-container>
+</div>
+
+<!-- Show only router outlet for auth pages -->
+<div class="auth-container" *ngIf="!shouldShowLayout()">
+  <router-outlet></router-outlet>
 </div>

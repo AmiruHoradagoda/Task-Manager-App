@@ -1,0 +1,22 @@
+<mat-toolbar color="primary" class="app-header">
+  <div class="header-left">
+    <button mat-icon-button (click)="onToggleSidenav()" matTooltip="Menu">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <div class="app-logo">
+      <mat-icon>assignment</mat-icon>
+      <span>Task Manager</span>
+    </div>
+  </div>
+  
+  <div class="user-section" *ngIf="fullName">
+    <div class="user-info">
+      <div class="avatar">{{ userInitial }}</div>
+      <div class="greeting">Hi, {{ fullName }}</div>
+    </div>
+    <button mat-flat-button color="warn" (click)="logout()" class="logout-btn">
+      <mat-icon>exit_to_app</mat-icon>
+      <span class="logout-text">Logout</span>
+    </button>
+  </div>
+</mat-toolbar>
