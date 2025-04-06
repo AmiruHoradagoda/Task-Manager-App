@@ -11,7 +11,11 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 @EnableJpaRepositories
-public interface TaskRepo extends JpaRepository<Task,Long> {
-    @Query("SELECT t FROM Task t WHERE t.status = :status")
-    Page<Task> findTasksByStatusString(@Param("status") String status, Pageable pageable);
+public interface TaskRepo extends JpaRepository<Task, Long> {
+
+    @Query("SELECT t FROM Task t WHERE t.user.userId = :userId")
+    Page<Task> findByUserUserId(@Param("userId") String userId, Pageable pageable);
+
+    @Query("SELECT t FROM Task t WHERE t.status = :status AND t.user.userId = :userId")
+    Page<Task> findByStatusAndUserUserId(@Param("status") String status, @Param("userId") String userId, Pageable pageable);
 }

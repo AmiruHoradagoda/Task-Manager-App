@@ -8,6 +8,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { StandardResponseDto } from '../models/standard-response.model';
 
 export interface AuthResponseDto {
+  userId: string;
   username: string;
   fullName: string;
   token: string;
@@ -16,7 +17,6 @@ export interface AuthResponseDto {
 export interface RegisterRequest {
   fullName: string;
   username: string;
-  email: string;
   password: string;
 }
 
@@ -123,7 +123,10 @@ export class AuthService {
     const userData = localStorage.getItem(this.userKey);
     return userData ? JSON.parse(userData) : null;
   }
-  
+  getCurrentUserId(): string {
+    const user = this.currentUserValue;
+    return user ? user.userId : '';
+  }
   isLoggedIn(): boolean {
     return !!this.getToken();
   }

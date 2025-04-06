@@ -9,15 +9,15 @@ public interface TaskService {
 
     TaskResponseDto getTaskById(Long taskId);
 
-    Void saveTask(TaskRequestDto taskDto);
+    Void saveTask(TaskRequestDto taskDto,String userId);
 
     TaskResponseDto updateTask(Long taskId, TaskRequestDto taskDto);
 
     Void deleteTask(Long taskId);
 
-    TaskResponsePaginatedDto getAllTasks(int page, int size);
+    TaskResponsePaginatedDto getAllTasks(int page, int size,String userId);
 
-    TaskResponsePaginatedDto getAllTasksByStatus(int page, int size, String taskStatus);
+    TaskResponsePaginatedDto getAllTasksByStatus(int page, int size, String taskStatus,String userId);
 
     ;
 }

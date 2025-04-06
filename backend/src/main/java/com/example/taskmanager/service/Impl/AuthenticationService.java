@@ -51,6 +51,7 @@ public class AuthenticationService {
                     .orElseThrow(() -> new RuntimeException("User not found"));
 
             return AuthResponseDto.builder()
+                    .userId(user.getUserId())
                     .username(username)
                     .fullName(user.getFullName())
                     .token(token)

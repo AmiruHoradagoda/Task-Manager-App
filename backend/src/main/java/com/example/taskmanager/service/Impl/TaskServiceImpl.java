@@ -3,10 +3,13 @@ package com.example.taskmanager.service.Impl;
 import com.example.taskmanager.dto.request.TaskRequestDto;
 import com.example.taskmanager.dto.response.TaskResponseDto;
 import com.example.taskmanager.dto.response.paginate.TaskResponsePaginatedDto;
+import com.example.taskmanager.entity.ApplicationUser;
 import com.example.taskmanager.entity.Task;
+import com.example.taskmanager.repository.ApplicationUserRepo;
 import com.example.taskmanager.repository.TaskRepo;
 import com.example.taskmanager.service.TaskService;
 import com.example.taskmanager.utility.mappers.TaskMapper;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,23 +21,29 @@ import java.util.List;
 
 @Service
 public class TaskServiceImpl implements TaskService {
+    private final ApplicationUserRepo userRepo;
     private final TaskRepo taskRepo;
     private final TaskMapper taskMapper;
     @Autowired
-    TaskServiceImpl(TaskRepo taskRepo,TaskMapper taskMapper){
+    TaskServiceImpl(TaskRepo taskRepo,TaskMapper taskMapper,ApplicationUserRepo userRepo){
+        this.userRepo = userRepo;
         this.taskRepo = taskRepo;
         this.taskMapper=taskMapper;
     }
 
 
     @Override
-    public TaskResponsePaginatedDto getAllTasks(int page, int size) {
-        Pageable pageable  = PageRequest.of(page,size);
-        Page<Task> taskPage = taskRepo.findAll(pageable);
+    public TaskResponsePaginatedDto getAllTasks(int page, int size, String userId) {
+        Pageable pageable = PageRequest.of(page, size);
+
+        // Update to find tasks by user ID
+        Page<Task> taskPage = taskRepo.findByUserUserId(userId, pageable);
+
         List<TaskResponseDto> taskDtoList = taskPage.getContent()
                 .stream()
                 .map(taskMapper::toTaskResponse)
                 .toList();
+
         return TaskResponsePaginatedDto.builder()
                 .dataCount(taskPage.getTotalElements())
                 .dataList(taskDtoList)
@@ -42,9 +51,11 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public TaskResponsePaginatedDto getAllTasksByStatus(int page, int size, String taskStatusStr) {
+    public TaskResponsePaginatedDto getAllTasksByStatus(int page, int size, String taskStatusStr, String userId) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<Task> taskPage = taskRepo.findTasksByStatusString(taskStatusStr, pageable);
+
+        // Update to find tasks by both status and user ID
+        Page<Task> taskPage = taskRepo.findByStatusAndUserUserId(taskStatusStr, userId, pageable);
 
         List<TaskResponseDto> taskDtoList = taskPage.getContent()
                 .stream()
@@ -64,10 +75,14 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Void saveTask(TaskRequestDto taskDto) {
-        Task task  = taskMapper.toTask(taskDto);
-        // Set current date and time
+    public Void saveTask(TaskRequestDto taskDto, String userId) {
+        Task task = taskMapper.toTask(taskDto);
         task.setCreatedAt(LocalDateTime.now());
+
+        ApplicationUser user = userRepo.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + userId));
+        task.setUser(user);
+
         taskRepo.save(task);
         return null;
     }

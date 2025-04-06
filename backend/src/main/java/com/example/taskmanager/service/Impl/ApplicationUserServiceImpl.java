@@ -79,6 +79,7 @@ public class ApplicationUserServiceImpl implements ApplicationUserService {
 
         // Return response with token and user details
         return AuthResponseDto.builder()
+                .userId(savedUser.getUserId())
                 .username(dto.getUsername())
                 .fullName(dto.getFullName())
                 .token(token)
