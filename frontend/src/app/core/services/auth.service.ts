@@ -6,19 +6,9 @@ import { Router } from '@angular/router';
 import { environment } from '../../../environments/environment.development';
 import { isPlatformBrowser } from '@angular/common';
 import { StandardResponseDto } from '../models/standard-response.model';
+import { AuthResponseDto, RegisterRequest } from '../models/user.model';
 
-export interface AuthResponseDto {
-  userId: string;
-  username: string;
-  fullName: string;
-  token: string;
-}
 
-export interface RegisterRequest {
-  fullName: string;
-  username: string;
-  password: string;
-}
 
 @Injectable({
   providedIn: 'root',
@@ -33,10 +23,9 @@ export class AuthService {
   public currentUser: Observable<AuthResponseDto | null>;
 
   constructor(private http: HttpClient, private router: Router) {
-    // Check if we're in a browser environment
+
     this.isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
 
-    // Initialize with null if not in browser
     const userData = this.isBrowser ? this.getUserData() : null;
     this.currentUserSubject = new BehaviorSubject<AuthResponseDto | null>(
       userData
@@ -59,14 +48,12 @@ export class AuthService {
       )
       .pipe(
         tap((response) => {
-          // Extract the user data from the nested 'data' property
           const user = response.data;
 
           console.log('Login response:', response);
           console.log('User data:', user);
 
           if (this.isBrowser) {
-            // Store the token and user data
             localStorage.setItem(this.tokenKey, user.token);
             localStorage.setItem(this.userKey, JSON.stringify(user));
           }
@@ -74,7 +61,6 @@ export class AuthService {
           this.currentUserSubject.next(user);
           return user;
         }),
-        // Map the response to just return the data part
         map((response) => response.data),
         catchError((error) => {
           console.error('Login error', error);
@@ -90,7 +76,6 @@ export class AuthService {
         userData
       )
       .pipe(
-        // Map the response to just return the data part
         map((response) => response.data),
         catchError((error) => {
           console.error('Registration error', error);
@@ -101,7 +86,6 @@ export class AuthService {
 
   logout(): void {
     if (this.isBrowser) {
-      // Only try to access localStorage in browser environment
       localStorage.removeItem(this.tokenKey);
       localStorage.removeItem(this.userKey);
     }

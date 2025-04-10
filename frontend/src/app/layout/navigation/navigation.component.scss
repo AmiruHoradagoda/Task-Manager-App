@@ -1,0 +1,16 @@
+.app-sidenav-container {
+  flex: 1;
+  height: calc(100vh - 64px);
+}
+
+.app-sidenav {
+  min-width: 250px;
+}
+
+.app-content {
+  height: 100%;
+}
+
+.content-wrapper {
+  padding: 20px;
+}
