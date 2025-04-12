@@ -2,6 +2,7 @@ package com.example.taskmanager.service.Impl;
 
 import com.example.taskmanager.dto.response.AuthResponseDto;
 import com.example.taskmanager.entity.ApplicationUser;
+import com.example.taskmanager.exception.EntryNotFoundException;
 import com.example.taskmanager.jwt.JwtConfig;
 import com.example.taskmanager.repository.ApplicationUserRepo;
 import io.jsonwebtoken.Jwts;
@@ -48,7 +49,7 @@ public class AuthenticationService {
                     .compact();
 
             ApplicationUser user = userRepo.findByUsername(username)
-                    .orElseThrow(() -> new RuntimeException("User not found"));
+                    .orElseThrow(() -> new EntryNotFoundException("User not found"));
 
             return AuthResponseDto.builder()
                     .userId(user.getUserId())

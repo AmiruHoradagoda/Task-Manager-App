@@ -5,6 +5,7 @@ import com.example.taskmanager.dto.response.TaskResponseDto;
 import com.example.taskmanager.dto.response.paginate.TaskResponsePaginatedDto;
 import com.example.taskmanager.entity.ApplicationUser;
 import com.example.taskmanager.entity.Task;
+import com.example.taskmanager.exception.EntryNotFoundException;
 import com.example.taskmanager.repository.ApplicationUserRepo;
 import com.example.taskmanager.repository.TaskRepo;
 import com.example.taskmanager.service.TaskService;
@@ -36,7 +37,6 @@ public class TaskServiceImpl implements TaskService {
     public TaskResponsePaginatedDto getAllTasks(int page, int size, String userId) {
         Pageable pageable = PageRequest.of(page, size);
 
-        // Update to find tasks by user ID
         Page<Task> taskPage = taskRepo.findByUserUserId(userId, pageable);
 
         List<TaskResponseDto> taskDtoList = taskPage.getContent()
@@ -54,7 +54,6 @@ public class TaskServiceImpl implements TaskService {
     public TaskResponsePaginatedDto getAllTasksByStatus(int page, int size, String taskStatusStr, String userId) {
         Pageable pageable = PageRequest.of(page, size);
 
-        // Update to find tasks by both status and user ID
         Page<Task> taskPage = taskRepo.findByStatusAndUserUserId(taskStatusStr, userId, pageable);
 
         List<TaskResponseDto> taskDtoList = taskPage.getContent()
@@ -70,7 +69,7 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public TaskResponseDto getTaskById(Long taskId) {
         Task task = taskRepo.findById(taskId)
-                .orElseThrow(()->new RuntimeException("Task is Not Found"));
+                .orElseThrow(()->new EntryNotFoundException("Task is Not Found"));
         return taskMapper.toTaskResponse(task);
     }
 
@@ -90,7 +89,7 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public TaskResponseDto updateTask(Long taskId, TaskRequestDto taskDto) {
         Task task = taskRepo.findById(taskId)
-                .orElseThrow(()->new RuntimeException("Task is Not Found"));
+                .orElseThrow(()->new EntryNotFoundException("Task is Not Found"));
         taskMapper.updateTaskFromDto(taskDto, task);
         // Set current date and time
         task.setCreatedAt(LocalDateTime.now());
